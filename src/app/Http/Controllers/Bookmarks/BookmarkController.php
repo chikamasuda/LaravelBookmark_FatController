@@ -9,6 +9,7 @@ use App\Models\BookmarkCategory;
 use App\Bookmark\UseCase\ShowBookmarkListPageUseCase;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
+use App\Lib\LinkPreview\LinkPreview;
 use Dusterio\LinkPreview\Client;
 use Dusterio\LinkPreview\Exceptions\UnknownParserException;
 use Exception;
@@ -117,7 +118,7 @@ class BookmarkController extends Controller
    */
   public function create(CreateBookmarkRequest $request)
   {
-    $useCase = new CreateBookmarkUseCase();
+    $useCase = new CreateBookmarkUseCase(new LinkPreview());
     $useCase->handle($request->url, $request->category, $request->comment);
     // 暫定的に成功時は一覧ページへ
     return redirect('/bookmarks', 302);
